@@ -1,3 +1,5 @@
+# ## this code and be improved to accomodate more large number of arguments 
+
 def maximum(a, b, c):
     if (a > b) and (a > c):
         return print("'a' is the maximum number")
