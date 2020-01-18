@@ -2,7 +2,7 @@ def subtractor(container):
     return [int(item/counter) for counter, item in enumerate(container) if item != 0]
 
 
-print(subtractor([0, 1, 4, 9, 16, 25, 36, 49, 64, 81]))
+print(subtractor([0, 1, 4, 9, 16, 25, 36, 49, 64, 81]))  # squares included
 
 one = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 two = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
