@@ -12,7 +12,7 @@ import random
 # print(("{}" * 8).format(r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7]))
 
 # Solution two
-print(f'V1 - Your random number is {"".join(str(random.randint(0, 1)) for item in range(0, 10))}')
+print(f'V1 - Your random number is {"".join(str(random.randint(0, 1)) for item in range(0, 8))}')
 print(f'V1 - length cannot be applied to random 1')
 print("")
 
@@ -23,7 +23,7 @@ print("")
 # or less than 8 numbers. The advantage however is that it can list all possible number within an 8 bit number and it
 # can easily be tweaked to print all possible number 8 numbers in the combination of other numbers specified in i
 
-i = ["0", "1", ]
+i = ["0", "1"]
 
 # print("\n".join(f"{a}{b}{c}{d}{e}{f}{g}{h}" for a in i for b in i for c in i for d in i for e in i for f in i for g
 # in i for h in i))

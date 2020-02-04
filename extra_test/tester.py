@@ -1,20 +1,27 @@
 class Node:
 
-    def __init__(self, data, next_container=None):
+    def __init__(self, data, prev=None, next=None):
         self.data = data
-        self.next_container = next_container
+        self.prev = prev
+        self.next = next
 
     def get_data(self):
         return self.data
 
-    def get_next_container(self):
-        return self.next_container
+    def get_prev(self):
+        return self.prev
 
-    def set_data(self, data):
-        self.data = data
+    def get_next(self):
+        return self.next
 
-    def set_next_container(self, new_next_container):
-        self.next_container = new_next_container
+    def set_data(self, new_data):
+        self.data = new_data
+
+    def set_next(self, new_next):
+        self.next = new_next
+
+    def set_prev(self, new_prev):
+        self.prev = new_prev
 
 
 class LinkedList:
@@ -22,70 +29,123 @@ class LinkedList:
     def __init__(self, main_holder=None):
         self.main_holder = main_holder
 
-    def add_node(self, data):
+    def prepend(self, data):
         new_node = Node(data)
-        new_node.set_next_container(self.main_holder)
+        new_node.next = self.main_holder
+
+        if self.main_holder is not None:
+            self.main_holder.prev = new_node
+
         self.main_holder = new_node
 
+    def append(self, data):
+        current = self.main_holder
+
+        new_node = Node(data)
+        new_node.set_next(None)
+
+        while current.get_next():
+            current = current.next
+
+        if current is None:
+            new_node.set_prev(None)
+
+        else:
+            current.set_next(new_node)
+            new_node.set_prev(current)
+
+        # while current:
+        #    if current is None:
+        #        self.prepend(data)
+        #        break
+
+        #    if current.get_next() is None:
+        #        new_node = Node(data)
+        #        new_node.set_next(None)
+        #        new_node.set_prev(current)
+        #        current.set_next(new_node)
+        #        break
+
+        #    current = current.get_next()
+
     def size(self):
-        container = self.main_holder
+        current = self.main_holder
 
-        counter = 0
+        count = 0
 
-        while container:
-            counter += 1
-            container = container.get_next_container()
+        while current:
+            count += 1
+            current = current.get_next()
 
-        return counter
+        return count
 
-    def print_values(self):
-        container = self.main_holder
+    def reverse(self):
+        current = self.main_holder
 
-        values = []
+        hold = []
+        size = self.size()
 
-        while container:
-            values.append(container.get_data())
-            container = container.get_next_container()
+        while current:
+            hold.insert(0, current.get_data())
+            current = current.get_next()
 
-        if len(values) > 0:
-            print(", ".join([str(value) for value in values]))
-        elif len(values) == 0:
-            print("There are no values in the LinkedList")
+            if current.get_next() is None:
+                hold.insert(0, current.get_data())
+                break
+
+        #print(hold)
+
+        count = 0
+
+        while current:
+            count += 1
+            current.set_data(hold[size - count])
+            current = current.get_prev()
 
 
-    def find_value(self, data):
-        container = self.main_holder
 
-        entry_number_locator = self.size()
-        entry_number_list = []
-        number_of_data_found = 0
-        address = []
+    def delete_node(self, data):  # used the brute-force approach
+        current = self.main_holder
 
-        while container:
-            entry_number_locator -= 1
-            if container.get_data() == data:
-                entry_number_list.append(entry_number_locator)
-                number_of_data_found += 1
-                address.append(container)
-                container = container.get_next_container()
+        prev_holder = None
 
-            elif container.get_data != data:
-                container = container.get_next_container()
+        while current:
 
-        print("\n".join(f"The entered value was found as entry {entry_number} in node {str(node)}" for entry_number, node in
-                        zip(entry_number_list[::-1], address[::-1])))
+            if data == current.get_data():
+                if current == self.main_holder:
+                    self.main_holder = self.main_holder.get_next()
+                    self.main_holder.set_prev(None)
+                    current = current.get_next()
 
-        print("")
-        print(f"As summary, the entered value was found {number_of_data_found} times in the following nodes: " + "\n"
-               + "\n".join(str(add) for add in address[::-1]))
+                elif current != self.main_holder:
+                    (current.get_prev()).set_next(current.get_next())
+                    (current.get_next()).set_prev(current.get_prev())
+                    current = current.get_next()
+
+            elif data != current.get_data():
+                current = current.get_next()
+
+    def print(self):
+        current = self.main_holder
+
+        data = []
+
+        while current:
+            data.append(current.get_data())
+            current = current.get_next()
+
+        print("\n".join(f"{num}. {item}" for num, item in enumerate(data, start=1)))
 
 
 li = LinkedList()
-li.add_node("one")
-li.add_node("two")
-li.add_node("three")
-li.add_node("four")
-li.add_node("five")
-li.add_node("three")
 
-li.find_value("three")
+li.prepend("three")
+li.prepend("two")
+li.prepend("one")
+li.append("four")
+li.append("five")
+
+#print(li.main_holder.next.next.next.prev.data)
+#print(li.size())
+li.reverse()
+li.print()
