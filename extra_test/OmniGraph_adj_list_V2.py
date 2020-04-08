@@ -10,20 +10,22 @@
 
 class OmniGraph:
 
-    def __init__(self, nodes_list=None, arcs_list=None, edges_list=None):
-        self.nodes_list = nodes_list
+    def __init__(self, vertices_list=None, arcs_list=None, edges_list=None):
+        self.vertices_list = vertices_list
         self.arcs_list = arcs_list
         self.edges_list = edges_list
+        self.stats = []
+        self.time = 1
+        
+        if self.vertices_list is None:
+            self.vertices_list = []
 
-        if self.nodes_list is None:
-            self.nodes_list = []
-
-        self.nodes_to_id = {}
+        self.vertices_to_id = {}
         self.weight = []
         self.neighbors = []
 
-        if self.nodes_list is not None:
-            for node in self.nodes_list:
+        if self.vertices_list is not None:
+            for node in self.vertices_list:
                 self.add_node(node)
 
         if self.arcs_list is not None:
@@ -35,17 +37,17 @@ class OmniGraph:
                 self.add_edge(name_u, name_v, weight)
 
     def add_node(self, u):
-        if u not in self.nodes_list:
-            self.nodes_list.append(u)
+        if u not in self.vertices_list:
+            self.vertices_list.append(u)
 
-        if u not in self.nodes_list or (self.nodes_list is not None
-                                        and u not in self.nodes_to_id): # Assuming that when self.node_list is not None,
+        if u not in self.vertices_list or (self.vertices_list is not None
+                                        and u not in self.vertices_to_id): # Assuming that when self.node_list is not None,
                                                                         # its value is a list of graph nodes:
-            self.nodes_to_id[u] = len(self.nodes_to_id)
+            self.vertices_to_id[u] = len(self.vertices_to_id)
             self.weight.append({})
             self.neighbors.append([])
 
-        elif u in self.nodes_list or (self.nodes_list is not None and u in self.nodes_list):
+        elif u in self.vertices_list or (self.vertices_list is not None and u in self.vertices_list):
             print(f"{u} is already a node in the graph!")
 
     def apply_uniform_spacing_(self, t):
@@ -53,39 +55,77 @@ class OmniGraph:
 
     def add_arc(self, name_u, name_v, weight=None):
 
-        if name_u in self.nodes_list and name_v in self.nodes_list:
-            u = self.nodes_to_id[name_u]
-            v = self.nodes_to_id[name_v]
+        if name_u in self.vertices_list and name_v in self.vertices_list:
+            u = self.vertices_to_id[name_u]
+            v = self.vertices_to_id[name_v]
 
             if v not in self.neighbors[u]:
                 self.neighbors[u].append(v)
                 self.weight[u][v] = weight
 
             elif v in self.neighbors[u]:
-                spacing = self.apply_uniform_spacing_(self.nodes_list[u])
-                print(f"{self.nodes_list[u]}{spacing}-----> "
-                      f"{self.nodes_list[v]} already exists.")
+                spacing = self.apply_uniform_spacing_(self.vertices_list[u])
+                print(f"{self.vertices_list[u]}{spacing}-----> "
+                      f"{self.vertices_list[v]} already exists.")
 
-        elif name_u not in self.nodes_list:
+        elif name_u not in self.vertices_list:
             print(f"{name_u} is not a node in the graph!")
-        elif name_v not in self.nodes_list:
+        elif name_v not in self.vertices_list:
             print(f"{name_v} is not a node in the graph!")
 
     def add_edge(self, name_u, name_v, weight=None):
         self.add_arc(name_u, name_v, weight)
         self.add_arc(name_v, name_u, weight)
 
+    def execute_stats(self):
+        self.stats = [["unexplored", 0, 0] for vertex in self.vertices_list]
 
-nodes = ["Seattle", "San Francisco", "Los Angeles", "Denver", "Kansas City",
-         "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston"]
+    def _dfs(self, vertex):  # Made this myself... using the list method (self.stats) without class Vertex
+        if vertex in self.vertices_list:
+            vertex_index = self.vertices_to_id[vertex]
+            self.stats[vertex_index][0] = "exploring"
 
-edges = [("Seattle", "San Francisco", "19"), ("San Francisco", "Los Angeles", "15"), ("Seattle", "Denver", "18"),
-         ("Seattle", "Atlanta", "118")]
+            self.stats[vertex_index][1] = self.time
+            self.time += 1
 
-omnii = OmniGraph(nodes, arcs_list=None, edges_list=edges)
+            for item in self.neighbors[vertex_index]:
+                if self.stats[item][0] == "unexplored":
+                    self._dfs(self.vertices_list[item])
+
+            self.stats[vertex_index][0] = "explored"
+
+            self.stats[vertex_index][2] = self.time
+            self.time += 1
+
+    def dfs(self, vertex):
+        self.execute_stats()
+        self._dfs(vertex)
+
+
+    def print_graph(self):
+        for num, item in enumerate(self.neighbors):
+            print(f"{self.vertices_list[num]} {[self.vertices_list[i] for i in item]}  {self.stats[num][1]}/{self.stats[num][2]}")
+
+
+
+nodes = list("abcdefghij".upper())
+
+edges = [('B', 'C'), ('E', 'B'), ('C', 'I'), ('E', 'D'), ('I', 'E'), ('H', 'A'), ('J', 'I'), ('G', 'A'), ('D', 'F'), ('I', 'B')]
+
+omnii = OmniGraph(nodes)
+
+for a, b in edges:
+    omnii.add_edge(a, b)
+
+
 
 print("")
-print(omnii.nodes_list)
-print(omnii.nodes_to_id)
+print(omnii.vertices_list)
+print(omnii.vertices_to_id)
 print(omnii.neighbors)
 print(omnii.weight)
+omnii.dfs("A")
+omnii.dfs("B")
+
+print(omnii.stats)
+omnii.print_graph()

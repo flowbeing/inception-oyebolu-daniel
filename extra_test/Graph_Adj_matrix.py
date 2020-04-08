@@ -21,6 +21,9 @@ class Graph:
     # be raised. Also, user has to be correct on choice of whether edge is directed or not. Otherwise,
     # there is a good chance errors will be raised.
     def add_edge(self, name_u, name_v, undirected_edge=True):
+        if name_u == name_v:
+            print("name_u cannot be equal name_v")
+            return
         u = self.name_of_vertices_to_id[name_u]
         v = self.name_of_vertices_to_id[name_v]
 
@@ -34,6 +37,9 @@ class Graph:
             return
 
     def rem_edge(self, u, v, undirected_edge):
+        if u == v:
+            print("Value of u cannot be equal to the value of v")
+            return
         if self.adj_matrix[u][v] == 0:
             print("Edge is not in the list!")
             return
@@ -45,6 +51,9 @@ class Graph:
             return
 
     def contains_edge(self, u, v, undirected_edge=True):
+        if u == v:
+            print("Value of u cannot be equal to the value of v")
+            return
         if undirected_edge is True:
             if v in self.adj_matrix[u] and u in self.adj_matrix[v]:
                 print(f"{u} ----- {v} exists in the graph.")
@@ -71,10 +80,32 @@ class Graph:
             print(i)
 
 
-name_of_vertices = list("abcdefgh")
+name_of_vertices = list("abcdefghij")
 
-graph = Graph(8, name_of_vertices)
-graph.add_edge('a', "b", True)
-graph.add_edge("c", "a")
-graph.add_edge("g", "h")
+graph = Graph(10, name_of_vertices)
+
+graph.add_edge('a', "b")
+graph.add_edge("b", "a")
+graph.add_edge("a", "e")
+graph.add_edge("b", "a")
+graph.add_edge("b", "f")
+graph.add_edge("c", "g")
+graph.add_edge("d", "e")
+graph.add_edge("d", "h")
+graph.add_edge("e", "a")
+graph.add_edge("e", "d")
+graph.add_edge("e", "h")
+graph.add_edge("f", "b")
+graph.add_edge("f", "i")
+graph.add_edge("f", "j")
+graph.add_edge("g", "c")
+graph.add_edge("g", "f")
+graph.add_edge("g", "j")
+graph.add_edge("h", "d")
+graph.add_edge("h", "e")
+graph.add_edge("h", "i")
+graph.add_edge("i", "h")
+graph.add_edge("i", "f")
+graph.add_edge("j", "f")
+graph.add_edge("j", "g")
 graph.toString()
