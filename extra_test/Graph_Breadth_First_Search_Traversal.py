@@ -120,6 +120,11 @@ g.print_graph()
 g.reset_attr()
 print("")
 
-print(g.vertices["A"].status)
-g.bfs_two("A")
-g.print_graph()
+# print(g.vertices["A"].status)
+# g.bfs_two("A")
+# g.print_graph()
+
+print("")
+
+# for vertex in g.vertices:
+#     print(f"{vertex} {g.vertices[vertex].neighbors}")

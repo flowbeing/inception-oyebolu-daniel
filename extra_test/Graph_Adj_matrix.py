@@ -68,8 +68,10 @@ class Graph:
     def toString(self):
         print(f"       {name_of_vertices}")
         print(f'        {f"_" * ((len(name_of_vertices) + 2) * (int(len(name_of_vertices) / 2)))}')
-        adj_matrix_two = self.adj_matrix
+
+        adj_matrix_two = self.adj_matrix[:]
         count = 0
+
         for num, i in enumerate(adj_matrix_two, start=0):
             for num_two, ii in enumerate(adj_matrix_two[num]):
                adj_matrix_two[num][num_two] = str(adj_matrix_two[num][num_two])
@@ -108,4 +110,10 @@ graph.add_edge("i", "h")
 graph.add_edge("i", "f")
 graph.add_edge("j", "f")
 graph.add_edge("j", "g")
+
 graph.toString()
+
+print()
+
+for i in graph.adj_matrix:
+    print(i)
