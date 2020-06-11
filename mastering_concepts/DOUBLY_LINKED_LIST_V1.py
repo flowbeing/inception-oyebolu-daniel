@@ -116,7 +116,7 @@ class LinkedList:
             if data == current.get_data():
                 if current == self.main_holder:
                     self.main_holder = self.main_holder.get_next()
-                    self.main_holder.set_prev(None)
+                    #self.main_holder.set_prev(None)
                     current = current.get_next()
 
                 elif current != self.main_holder:

@@ -114,12 +114,17 @@ class DoublyLinkedList:
         self.head = previous
 
 
-    def print_list(self):
+    def visualise_list(self):
         current = self.head
 
+        hold = []
+
         while current:
-            print(current.get_val())
+            hold.append(current.get_val())
             current = current.get_next()
+
+        # print(" < ----- > ".join(f"{[item]}" for item in hold)) Produces different result as item is printed as list
+        print("Doubly Linked List: " + " < ----- > ".join(f"[{item}]" for item in hold))
 
     def print_next_and_previous(self):
         current = self.head
@@ -147,9 +152,9 @@ g.prepend("c")
 g.prepend("d")
 g.prepend("e")
 
-g.delete("e")
+# g.delete("e")
 
 g.reverse_list()
-g.print_list()
+g.visualise_list()
 
-g.print_next_and_previous()
+# g.print_next_and_previous()
