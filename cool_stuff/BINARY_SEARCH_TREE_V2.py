@@ -387,6 +387,7 @@ class Node:
         print(padding + "B I N A R Y  S E A R C H  T R E E")
         print(padding + "=================================")
         print(padding + "     Author : Oyebolu Daniel     ")
+        print(padding + "       github.com/satonoti       ")
         #print(padding + "         =================       ")
 
 
