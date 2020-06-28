@@ -15,13 +15,3 @@ print(des)
 
 print()
 print(data_frame)
-
-# print(data_frame)
-fig, ax = plt.subplots()
-plot_one = data_frame.plot('Name', 'Employee | friend recommendation', ax=ax)
-plot_two = data_frame.plot('Name', 'Employee CEO approval rate', ax=ax)
-
-# plot.set_xlim([0, 70])
-plt.show()
-
-sqlalchemy.
